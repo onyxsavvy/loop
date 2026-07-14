@@ -1,26 +1,290 @@
 @import "tailwindcss";
 
+/* ── Loop Design System — Color Tokens ── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-void: #0B0B0D;
+  --bg-surface: #17161A;
+  --bg-surface-2: #201F24;
+  --accent-copper: #D89B4A;
+  --accent-violet: #9B5DE5;
+  --text-primary: #F5F1EA;
+  --text-muted: #9A969E;
+  --border-hairline: #2A292E;
+
+  /* Layout */
+  --nav-height: 80px;
+
+  /* Fonts */
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-body: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-space-mono), "Courier New", monospace;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@media (max-width: 768px) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --nav-height: 72px;
   }
 }
 
+/* ── Tailwind v4 Theme Extension ── */
+@theme inline {
+  --color-void: var(--bg-void);
+  --color-surface: var(--bg-surface);
+  --color-surface-2: var(--bg-surface-2);
+  --color-copper: var(--accent-copper);
+  --color-violet: var(--accent-violet);
+  --color-text-primary: var(--text-primary);
+  --color-text-muted: var(--text-muted);
+  --color-hairline: var(--border-hairline);
+
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+  --font-cursive: var(--font-cursive);
+
+  /* Animation keyframes */
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-glow-pulse: glow-pulse 2s ease-in-out infinite;
+
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(216, 155, 74, 0.3), 0 0 60px rgba(216, 155, 74, 0.1); }
+    50% { box-shadow: 0 0 30px rgba(216, 155, 74, 0.5), 0 0 80px rgba(216, 155, 74, 0.2); }
+  }
+}
+
+/* ── Global Resets ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: auto; /* Lenis handles smooth scroll */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-void);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+/* ── Global Grain Overlay ── */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.03;
+  mix-blend-mode: overlay;
+  background-image: url("/noise.svg");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+}
+
+/* ── Section Safety Rules (Design System §3) ── */
+.loop-section {
+  scroll-margin-top: var(--nav-height);
+  padding-top: calc(var(--nav-height) + 64px);
+  padding-bottom: 80px;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .loop-section {
+    padding-top: calc(var(--nav-height) + 32px);
+    padding-bottom: 48px;
+  }
+}
+
+/* ── Section Dividers ── */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--border-hairline) 20%,
+    var(--border-hairline) 80%,
+    transparent 100%
+  );
+  margin: 0 auto;
+  max-width: 90%;
+}
+
+/* ── Section Glow Backgrounds ── */
+.glow-copper {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(216, 155, 74, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.glow-violet {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(155, 93, 229, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Typography ── */
+.heading-display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  font-size: clamp(2.5rem, 6vw, 6rem);
+}
+
+.heading-section {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-copper);
+  font-weight: 400;
+}
+
+.body-text {
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+/* ── LoopCard Shared Treatment (Design System §4) ── */
+.loop-card {
+  background: rgba(23, 22, 26, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-hairline);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .loop-card {
+    padding: 20px;
+  }
+}
+
+.loop-card:hover {
+  border-color: rgba(216, 155, 74, 0.4);
+  transform: translateY(-4px);
+}
+
+/* ── Placeholder Media (Design System §5) ── */
+.placeholder-media {
+  position: relative;
+  background-color: var(--bg-surface);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.placeholder-media::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("/noise.svg");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.placeholder-media .placeholder-label {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  opacity: 0.6;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-void);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-hairline);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* ── Selection ── */
+::selection {
+  background: rgba(216, 155, 74, 0.3);
+  color: var(--text-primary);
+}
+
+/* ── Reduced Motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .grain-overlay {
+    display: none;
+  }
+}
+
+/* ── Utility: Hide on mobile / desktop ── */
+@media (max-width: 768px) {
+  .hide-mobile {
+    display: none !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .hide-desktop {
+    display: none !important;
+  }
 }
