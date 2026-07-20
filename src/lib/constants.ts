@@ -135,7 +135,7 @@ export const NIGHTLIFE_EVENTS: NightlifeEvent[] = [
     title: "Live Music Nights",
     description: "Soulful sets, full bar, rooftop air",
     schedule: "Every Friday & Saturday",
-    image: "/images/vivek-samtani.jpg",
+    image: "/images/music.jpg",
     cta: "See What\u2019s On",
     ctaLink: CONTACT.instagram,
   },
